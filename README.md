@@ -9,7 +9,7 @@ requirements: [brew](https://brew.sh/)
    ```
    
 2. Configure CMakeLists.txt(Refer to CMakeLists.txt at the root folder)
-3. create and move to build folder
+3. create and move to build folder(on Project folder)
    ```
    mkdir build
    cd build
