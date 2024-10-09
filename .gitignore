@@ -1,3 +1,6 @@
+# build folder
+/Project/build/
+
 # Created by https://www.toptal.com/developers/gitignore/api/macos,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,cmake
 
