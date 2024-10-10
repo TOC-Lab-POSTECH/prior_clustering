@@ -1,4 +1,4 @@
-# Project_1
+# Project_1: Clustering
 
 ## How to run(On Mac)
 requirements: [brew](https://brew.sh/)
