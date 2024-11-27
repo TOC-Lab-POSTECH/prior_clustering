@@ -12,6 +12,7 @@
 
 using namespace std;
 
+// 두 point 사이의 euclidean distance를 반환
 double distance(Point p1, Point p2) {
     double sum = 0.0;
     for (int i = 0; i < p1.getCoord().size(); i++) {
@@ -20,6 +21,10 @@ double distance(Point p1, Point p2) {
     return sqrt(sum);
 }
 
+/*
+ * Point 생성시 coordinates의 무작위 생성을 위한 util fn.
+ * start와 end 사이의 무작위 난수를 반환
+ * */
 double randNumGen(double start, double end){
     random_device rd;
     mt19937 gen(rd());
@@ -27,6 +32,7 @@ double randNumGen(double start, double end){
     return dis(gen);
 }
 
+// Combination fn을 위한 divide&conquer.
 void Comb(vector<Point>& points, vector<vector<Point>>& ans, vector<Point> comb, int r, int idx, int depth){
     if(r == 0){
         ans.push_back(comb);
@@ -50,17 +56,12 @@ void Comb(vector<Point>& points, vector<vector<Point>>& ans, vector<Point> comb,
     Comb(points, ans, comb, r - 1, idx + 1, depth + 1);
 }
 
+// Point vevtor를 받아 그 중 r개의 조합 vector를 element로 하는 vector를 반환.
+// superset lemma 를 위해 사용됨.
 vector<vector<Point>> Combination(vector<Point>& points, int r){
     vector<vector<Point>> ans;
     vector<Point> comb;
     comb.reserve(r);
-
-//    for(int i = 0; i < points.size(); i++){
-//        for(int k = 0; k < points[i].getCoord().size(); k++){
-//            cout << points[i].getCoord()[k] << " ";
-//        }
-//        cout << endl;
-//    }
 
     for(int i = 0; i < r; i++){
         comb.emplace_back(points[0].getCoord().size());
@@ -70,6 +71,7 @@ vector<vector<Point>> Combination(vector<Point>& points, int r){
     return ans;
 }
 
+// Point vector를 받아 해당 Point들의 center를 반환하는 함수.
 Point calculateCenter(vector<Point> points){
     int totalNum = points.size();
     vector<double> newCoord(points[0].getCoord().size());
@@ -85,7 +87,7 @@ Point calculateCenter(vector<Point> points){
     newPoint.setAllCoord(newCoord);
     return newPoint;
 }
-
+// Point vector를 받아 그 중 n개를 random sampling 하는 함수.
 vector<Point> randSample(vector<Point> points, int n){
     if (n > points.size()) {
         throw invalid_argument("n is larger than the size of points");
@@ -107,7 +109,7 @@ vector<Point> randSample(vector<Point> points, int n){
 
     return result;
 }
-
+// Point들을 어떤 한 점 ret에 대해 먼 순서대로 sort하는 함수.
 vector<Point> sortbyDistance(vector<Point> points, Point ref){
     vector<pair<double, Point>> dist;
     for(auto& point : points){
@@ -125,7 +127,7 @@ vector<Point> sortbyDistance(vector<Point> points, Point ref){
     }
     return ret;
 }
-
+// 구해진 clustering center들에 대해 전제 points들의 clustering cost를 계산하는 함수.
 double clusteringCost(vector<Point> points, vector<Point> centers){
     double totalCost = 0;
     for(auto& point: points){
@@ -137,10 +139,18 @@ double clusteringCost(vector<Point> points, vector<Point> centers){
     }
     return totalCost;
 }
-
+// Points vector를 start idx부터 end idx까지 slicing 하는 함수.
 vector<Point> slice(const std::vector<Point>& v, size_t start, size_t end) {
     if (start > end || end > v.size()) {
         throw std::out_of_range("Invalid slice range");
     }
     return vector<Point>(v.begin() + start, v.begin() + end);
+}
+// 한 점을 integer grid위로 옮기는 함수.
+Point roundPoint(Point point){
+    Point ret(point.getCoord().size());
+    for(int i = 0; i < point.getCoord().size(); i++){
+        ret.setCoord(i, round(point.getCoord()[i]));
+    }
+    return ret;
 }

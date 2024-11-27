@@ -28,4 +28,6 @@ double clusteringCost(vector<Point> points, vector<Point> centers);
 
 vector<Point> slice(const std::vector<Point>& v, size_t start, size_t end);
 
+Point roundPoint(Point point);
+
 #endif //K_MEANS_CLUSTERING_OF_AXIS_PARALLEL_AFFINE_SUBSPACES_UTIL_H
