@@ -108,6 +108,24 @@ vector<Point> randSample(vector<Point> points, int n){
     return result;
 }
 
+vector<Point> sortbyDistance(vector<Point> points, Point ref){
+    vector<pair<double, Point>> dist;
+    for(auto& point : points){
+        double pointDist = distance(ref, point);
+        dist.push_back(make_pair(pointDist, point));
+    }
+
+    sort(dist.begin(), dist.end(), [](pair<double, Point>& a, pair<double, Point>& b) {
+        return a.first > b.first;
+    });
+
+    vector<Point> ret;
+    for(auto& item : dist){
+        ret.push_back(item.second);
+    }
+    return ret;
+}
+
 double clusteringCost(vector<Point> points, vector<Point> centers){
     double totalCost = 0;
     for(auto& point: points){
