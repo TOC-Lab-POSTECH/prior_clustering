@@ -14,4 +14,18 @@ double distance(const Point p1, const Point p2);
 
 double randNumGen(double start, double end);
 
+void Comb(vector<Point>& points, vector<vector<Point>>& ans, vector<Point> comb, int r, int idx, int depth);
+
+vector<vector<Point>> Combination(vector<Point>& points, int r);
+
+Point calculateCenter(vector<Point> points);
+
+vector<Point> randSample(vector<Point> Points, int n);
+
+vector<Point> sortbyDistance(vector<Point> points, Point ref);
+
+double clusteringCost(vector<Point> points, vector<Point> centers);
+
+vector<Point> slice(const std::vector<Point>& v, size_t start, size_t end);
+
 #endif //K_MEANS_CLUSTERING_OF_AXIS_PARALLEL_AFFINE_SUBSPACES_UTIL_H

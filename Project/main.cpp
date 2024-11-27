@@ -1,5 +1,6 @@
 #include "util.h"
 #include "point.h"
+#include "twoMeans.h"
 #include <vector>
 
 int main (int, char**) {

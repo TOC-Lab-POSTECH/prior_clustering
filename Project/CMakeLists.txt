@@ -12,7 +12,13 @@ file(GLOB_RECURSE SOURCE_FILES
         "${CMAKE_SOURCE_DIR}/libs/*.cpp"
 )
 
-add_executable(Project1 main.cpp ${SOURCE_FILES})
+add_executable(Project1 main.cpp ${SOURCE_FILES}
+        classes/header/point.h
+        classes/source/point.cpp
+        classes/header/util.h
+        classes/source/util.cpp
+        classes/header/twoMeans.h
+        classes/source/twoMeans.cpp)
 
 #add_subdirectory(${CMAKE_SOURCE_DIR}/libs)
 

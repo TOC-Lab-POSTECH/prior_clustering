@@ -26,3 +26,103 @@ double randNumGen(double start, double end){
     uniform_real_distribution<> dis(start, end);
     return dis(gen);
 }
+
+void Comb(vector<Point>& points, vector<vector<Point>>& ans, vector<Point> comb, int r, int idx, int depth){
+    if(r == 0){
+        ans.push_back(comb);
+//        for(int i = 0; i < comb.size(); i++){
+//            for(int j = 0; j < comb[i].getCoord().size(); j++){
+//                cout << comb[i].getCoord()[j] << " ";
+//            }
+//        }
+//        cout << endl;
+//        cout << ans.size()<<endl;
+        return;
+    }
+
+    if(depth == points.size()){
+        return;
+    }
+
+    Comb(points, ans, comb, r, idx, depth + 1);
+
+    comb[idx] = points[depth];
+    Comb(points, ans, comb, r - 1, idx + 1, depth + 1);
+}
+
+vector<vector<Point>> Combination(vector<Point>& points, int r){
+    vector<vector<Point>> ans;
+    vector<Point> comb;
+    comb.reserve(r);
+
+//    for(int i = 0; i < points.size(); i++){
+//        for(int k = 0; k < points[i].getCoord().size(); k++){
+//            cout << points[i].getCoord()[k] << " ";
+//        }
+//        cout << endl;
+//    }
+
+    for(int i = 0; i < r; i++){
+        comb.emplace_back(points[0].getCoord().size());
+    }
+
+    Comb(points, ans, comb, r, 0, 0);
+    return ans;
+}
+
+Point calculateCenter(vector<Point> points){
+    int totalNum = points.size();
+    vector<double> newCoord(points[0].getCoord().size());
+    for(int i = 0; i < totalNum; i++){
+        for(int j = 0; j < points[i].getCoord().size(); j++){
+            newCoord[j] += points[i].getCoord()[j];
+        }
+    }
+    for(int i = 0; i < newCoord.size(); i++){
+        newCoord[i] = newCoord[i] / totalNum;
+    }
+    Point newPoint(points[0].getCoord().size());
+    newPoint.setAllCoord(newCoord);
+    return newPoint;
+}
+
+vector<Point> randSample(vector<Point> points, int n){
+    if (n > points.size()) {
+        throw invalid_argument("n is larger than the size of points");
+    }
+
+    vector<int> indices(points.size());
+    for (int i = 0; i < points.size(); ++i) {
+        indices[i] = i;
+    }
+
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(indices.begin(), indices.end(), gen);
+
+    vector<Point> result;
+    for (int i = 0; i < n; ++i) {
+        result.push_back(points[indices[i]]);
+    }
+
+    return result;
+}
+
+double clusteringCost(vector<Point> points, vector<Point> centers){
+    double totalCost = 0;
+    for(auto& point: points){
+        double minDist = numeric_limits<double>::infinity();
+        for(auto& center : centers){
+            minDist = min(minDist, distance(point, center));
+        }
+        totalCost += pow(minDist, 2);
+    }
+    return totalCost;
+}
+
+vector<Point> slice(const std::vector<Point>& v, size_t start, size_t end) {
+    if (start > end || end > v.size()) {
+        throw std::out_of_range("Invalid slice range");
+    }
+    return vector<Point>(v.begin() + start, v.begin() + end);
+}
