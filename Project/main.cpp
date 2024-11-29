@@ -12,7 +12,7 @@ int main (int, char**) {
 
     double eps = 0.5;
 
-    TwoMeans twomeans(test, eps);
+    TwoMeans twomeans(test, eps, "grid");
 
     cout << "# of points: " << test.size() << endl;
     cout << "raw" << endl;

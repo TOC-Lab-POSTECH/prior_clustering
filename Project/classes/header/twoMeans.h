@@ -8,6 +8,7 @@
 #include "point.h"
 #include "util.h"
 #include <vector>
+#include <string>
 
 class TwoMeans{
 private:
@@ -16,7 +17,7 @@ private:
     vector<Point> centers;
     double cost;
 public:
-    TwoMeans(vector<Point> points_, double epsilon_);
+    TwoMeans(vector<Point> points_, double epsilon_, string type_);
     vector<Point> getCenter();
     double getCost();
 };
