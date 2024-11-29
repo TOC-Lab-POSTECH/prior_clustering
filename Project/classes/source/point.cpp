@@ -22,6 +22,10 @@ vector<double> Point::getCoord() {
     return coord;
 };
 
+vector<double> Point::getCoordConst() const{
+    return coord;
+};
+
 Point& Point::setAllCoord(vector<double> newCoord) {
     coord = newCoord;
     return *this;
@@ -29,4 +33,8 @@ Point& Point::setAllCoord(vector<double> newCoord) {
 
 void Point::setCoord(int idx, double newVal) {
     coord[idx] = newVal;
+}
+
+bool Point::operator<(const Point& other) const{
+    return coord < other.getCoordConst();
 }

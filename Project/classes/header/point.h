@@ -15,8 +15,10 @@ public:
     Point(int d);
     double distance(const Point &other);
     vector<double> getCoord();
+    vector<double> getCoordConst() const;
     Point& setAllCoord(vector<double> newCoord);
     void setCoord(int idx, double newVal);
+    bool operator<(const Point& other) const;
 private:
     vector<double> coord;
 };
