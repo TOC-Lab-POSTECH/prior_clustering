@@ -38,8 +38,9 @@ void ManageData::printAll() {
              for(int k = 0; k < datas[i].getCenters()[j].getCoord().size(); k++){
                  cout << datas[i].getCenters()[j].getCoord()[k] << " ";
              }
-             cout << "\n" << endl;
+             cout << endl;
          }
+         cout << endl;
      }
      printSummary();
 }
@@ -53,4 +54,8 @@ void ManageData::printSummary() {
     }
     cout << "Avg Time Spent: " << totalTime/datas.size() << " Seconds" << endl;
     cout << "Avg Cost: " << totalCost/datas.size() << endl;
+}
+
+void ManageData::clear() {
+    datas.clear();
 }

@@ -28,8 +28,20 @@ double distance(Point p1, Point p2) {
 double randNumGen(double start, double end){
     random_device rd;
     mt19937 gen(rd());
-    uniform_real_distribution<> dis(start, end);
-    return dis(gen);
+    uniform_real_distribution<> dist(start, end);
+    return dist(gen);
+}
+
+/*
+ * Point 생성 시 Coordinates의 Normal Distribution을 통항 생성을 위한 util fn
+ *
+ *
+ * */
+double NormDistGen(double mean, double std_){
+    random_device rd;
+    mt19937 gen(rd());
+    std::normal_distribution<> dist(mean, std_);
+    return dist(gen);
 }
 
 // Combination fn을 위한 divide&conquer.

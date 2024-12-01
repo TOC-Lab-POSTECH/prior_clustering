@@ -30,6 +30,7 @@ public:
     void insert(TestData newData);
     void printAll();
     void printSummary();
+    void clear();
 };
 
 #endif //PROJECT1_TESTDATA_H

@@ -14,6 +14,8 @@ double distance(const Point p1, const Point p2);
 
 double randNumGen(double start, double end);
 
+double NormDistGen(double mean, double std_);
+
 void Comb(vector<Point>& points, vector<vector<Point>>& ans, vector<Point> comb, int r, int idx, int depth);
 
 vector<vector<Point>> Combination(vector<Point>& points, int r);
