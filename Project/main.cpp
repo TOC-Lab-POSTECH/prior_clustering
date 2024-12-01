@@ -4,50 +4,56 @@
 #include <vector>
 #include <iostream>
 #include <chrono>
+#include "testdata.h"
 
 int main (int, char**) {
-    vector <Point> test;
-    for (int i = 0; i < 1000; i++) {
-        test.push_back(Point(3).setAllCoord({randNumGen(-20, 20), randNumGen(-20, 20), randNumGen(-20, 20)}));
+    vector <Point> randDist;
+    for (int i = 0; i < 100; i++) {
+        randDist.push_back(Point(3).setAllCoord({randNumGen(-20, 20), randNumGen(-20, 20), randNumGen(-20, 20)}));
+    }
+
+    vector<Point> NormDist;
+    for(int i = 0; i < 100; i++){
+        NormDist.push_back(Point(3).setAllCoord({NormDistGen(10, 5), NormDistGen(10, 5), NormDistGen(10, 5)}));
+    }
+    for(int i = 0; i < 50; i++){
+        NormDist.push_back(Point(3).setAllCoord({NormDistGen(-10, 5), NormDistGen(-10, 5), NormDistGen(-10, 5)}));
     }
 
     double eps = 0.5;
+    int runtimes = 10;
 
-    auto start = chrono::high_resolution_clock::now();
+    ManageData randDistData;
 
-    TwoMeans twomeans(test, eps, "raw");
+    for(int i = 0; i < runtimes; i++){
+        auto start = chrono::high_resolution_clock::now();
 
-    auto end = chrono::high_resolution_clock::now();
+        TwoMeans twomeans(NormDist, eps, "raw");
 
-    auto duration = chrono::duration_cast<chrono::seconds>(end - start);
+        auto end = chrono::high_resolution_clock::now();
 
-    cout << "# of points: " << test.size() << endl;
-    cout << "raw" << endl;
-    cout << "cost: " << twomeans.getCost() << endl;
-    cout << "centers: " << endl;
-    for(auto& center : twomeans.getCenter()){
-        for(int i = 0; i < center.getCoord().size(); i++){
-            cout << center.getCoord()[i] << " ";
-        }
-        cout << endl;
+        auto duration = chrono::duration_cast<chrono::seconds>(end - start);
+
+        TestData newRandData(duration.count(), twomeans.getCost(), twomeans.getCenter());
+        randDistData.insert(newRandData);
     }
-    cout << "time spent: " << duration.count() << "seconds" << endl;
 
-    auto start2 = chrono::high_resolution_clock::now();
+    randDistData.printSummary();
 
-    TwoMeans twomeansgrid(test, eps, "grid");
+    randDistData.clear();
 
-    auto end2 = chrono::high_resolution_clock::now();
+    for(int i = 0; i < runtimes; i++){
+        auto start = chrono::high_resolution_clock::now();
 
-    auto duration2 = chrono::duration_cast<chrono::seconds>(end2 - start2);
-    cout << "\ngrid" << endl;
-    cout << "cost: " << twomeansgrid.getCost() << endl;
-    cout << "centers: " << endl;
-    for(auto& center : twomeansgrid.getCenter()){
-        for(int i = 0; i < center.getCoord().size(); i++){
-            cout << center.getCoord()[i] << " ";
-        }
-        cout << endl;
+        TwoMeans twomeans(NormDist, eps, "grid");
+
+        auto end = chrono::high_resolution_clock::now();
+
+        auto duration = chrono::duration_cast<chrono::seconds>(end - start);
+
+        TestData newRandData(duration.count(), twomeans.getCost(), twomeans.getCenter());
+        randDistData.insert(newRandData);
     }
-    cout << "time spent: " << duration2.count() << "seconds" << endl;
+
+    randDistData.printSummary();
 }
