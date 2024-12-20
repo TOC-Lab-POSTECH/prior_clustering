@@ -1,72 +1,69 @@
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Point_set_3.h>
+#include "util.h"
+#include "point.h"
+#include "twoMeans.h"
+#include <vector>
+#include <iostream>
+#include <chrono>
+#include "testdata.h"
 
-#include <fstream>
-#include <limits>
+int main (int, char**) {
+    vector <Point> randDist;
 
-#include "dummy.h"
+    // random distribution point set의 minimum, maximum 지정. (min ~ max 사이에서 무작위 실수 생성)
+    int min = -10000;
+    int max = 10000;
+    for (int i = 0; i < 100; i++) { // i의 최대 반복 횟수를 변경하여 point의 개수 조절
+        randDist.push_back(Point(3).setAllCoord({randNumGen(min, max), randNumGen(min, max), randNumGen(min, max)}));
+    }
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel Kernel;
-typedef Kernel::FT FT;
-typedef Kernel::Point_3 Point;
-typedef Kernel::Vector_3 Vector;
+    // normal distribution point set의 mean, standard deviation 지정.
+    vector<Point> NormDist;
+    int mean1 = 50;
+    int mean2 = -50;
+    int sd = 25;
+    for(int i = 0; i < 100; i++){ // i의 최대 반복 횟수를 변경하여 point의 개수 조절
+        NormDist.push_back(Point(3).setAllCoord({NormDistGen(mean1, sd), NormDistGen(mean1, sd), NormDistGen(mean1, sd)}));
+    }
+    for(int i = 0; i < 100; i++){ // i의 최대 반복 횟수를 변경하여 point의 개수 조절
+        NormDist.push_back(Point(3).setAllCoord({NormDistGen(mean2, sd), NormDistGen(mean2, sd), NormDistGen(mean2, sd)}));
+    }
 
-typedef CGAL::Point_set_3<Point> Point_set;
+    double eps = 1; // approximation factor epsilon.
+    int runtimes = 20;  // 테스트 실행 횟수
 
-void print_point_set (const Point_set& point_set)
-{
-    std::cerr << "Content of point set:" << std::endl;
-    for (Point_set::const_iterator it = point_set.begin();
-         it != point_set.end(); ++ it)
-        std::cerr << "* Point " << *it
-                  << ": " << point_set.point(*it) // or point_set[it]
-                  << " with normal " << point_set.normal(*it)
-                  << std::endl;
-}
+    ManageData randDistData;    // 실험 정보 저장 data structure
 
-int main (int, char**)
-{
-    Point_set point_set;
+    // 일반 알고리즘에 대한 실험 결과
+    for(int i = 0; i < runtimes; i++){
+        auto start = chrono::high_resolution_clock::now();
 
-    // Add points
-    point_set.insert (Point (0., 0., 0.));
-    point_set.insert (Point (0., 0., 1.));
-    point_set.insert (Point (0., 1., 0.));
+        TwoMeans twomeans(NormDist, eps, "raw");
 
-    point_set.add_normal_map();
+        auto end = chrono::high_resolution_clock::now();
 
-    print_point_set(point_set); // Normals have default values
+        auto duration = chrono::duration_cast<chrono::seconds>(end - start);
 
-    // Change normal values
-    Point_set::iterator it = point_set.begin();
-    point_set.normal(*(it++)) = Vector (1., 0., 0.);
-    point_set.normal(*(it++)) = Vector (0., 1., 0.);
-    point_set.normal(*(it++)) = Vector (0., 0., 1.);
+        TestData newRandData(duration.count(), twomeans.getCost(), twomeans.getCenter());
+        randDistData.insert(newRandData);
+    }
 
-    // Add point + normal
-    point_set.insert (Point (1., 2., 3.), Vector (4., 5., 6.));
+    randDistData.printAll();
 
-    print_point_set(point_set);
+    randDistData.clear();
 
-    // Add new item
-    Point_set::iterator new_item = point_set.insert(Point (7., 8., 9.));
-    point_set.normal(*new_item) = Vector (10., 11., 12.);
+    // grid rounding 에 대한 실험 결과
+    for(int i = 0; i < runtimes; i++){
+        auto start = chrono::high_resolution_clock::now();
 
-    print_point_set(point_set); // New item has default values
+        TwoMeans twomeans(NormDist, eps, "grid");
 
-    point_set.remove (point_set.begin() + 2,
-                      point_set.begin() + 4);
+        auto end = chrono::high_resolution_clock::now();
 
-    print_point_set(point_set); // New item has default values
+        auto duration = chrono::duration_cast<chrono::seconds>(end - start);
 
-    // Display information
-    std::cerr << "Number of removed points: " <<point_set.number_of_removed_points() << std::endl;
+        TestData newRandData(duration.count(), twomeans.getCost(), twomeans.getCenter());
+        randDistData.insert(newRandData);
+    }
 
-    point_set.collect_garbage();
-
-    // Display information (garbage should be gone)
-    std::cerr << "After garbage collection: " <<point_set.number_of_removed_points() << std::endl;
-
-    Dummy::test();
-    return 0;
+    randDistData.printAll();
 }
