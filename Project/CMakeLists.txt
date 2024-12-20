@@ -18,7 +18,9 @@ add_executable(Project1 main.cpp ${SOURCE_FILES}
         classes/header/util.h
         classes/source/util.cpp
         classes/header/twoMeans.h
-        classes/source/twoMeans.cpp)
+        classes/source/twoMeans.cpp
+        classes/header/TwoApproxTwoCenter.h
+        classes/source/TwoApproxTwoCenter.cpp)
 
 #add_subdirectory(${CMAKE_SOURCE_DIR}/libs)
 
