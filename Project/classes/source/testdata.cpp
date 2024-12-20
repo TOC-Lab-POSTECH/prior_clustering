@@ -53,7 +53,7 @@ void ManageData::printSummary() {
         totalCost += datas[i].getCost();
     }
     cout << "Avg Time Spent: " << totalTime/datas.size() << " Seconds" << endl;
-    cout << "Avg Cost: " << totalCost/datas.size() << endl;
+    cout << "Avg Cost: " << totalCost/datas.size() << "\n\n" << endl;
 }
 
 void ManageData::clear() {

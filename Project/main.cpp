@@ -8,20 +8,26 @@
 
 int main (int, char**) {
     vector <Point> randDist;
+
+    int min = -10000;
+    int max = 10000;
     for (int i = 0; i < 100; i++) {
-        randDist.push_back(Point(3).setAllCoord({randNumGen(-20, 20), randNumGen(-20, 20), randNumGen(-20, 20)}));
+        randDist.push_back(Point(3).setAllCoord({randNumGen(min, max), randNumGen(min, max), randNumGen(min, max)}));
     }
 
     vector<Point> NormDist;
+    int mean1 = 50;
+    int mean2 = -50;
+    int sd = 25;
     for(int i = 0; i < 100; i++){
-        NormDist.push_back(Point(3).setAllCoord({NormDistGen(10, 5), NormDistGen(10, 5), NormDistGen(10, 5)}));
+        NormDist.push_back(Point(3).setAllCoord({NormDistGen(mean1, sd), NormDistGen(mean1, sd), NormDistGen(mean1, sd)}));
     }
-    for(int i = 0; i < 50; i++){
-        NormDist.push_back(Point(3).setAllCoord({NormDistGen(-10, 5), NormDistGen(-10, 5), NormDistGen(-10, 5)}));
+    for(int i = 0; i < 100; i++){
+        NormDist.push_back(Point(3).setAllCoord({NormDistGen(mean2, sd), NormDistGen(mean2, sd), NormDistGen(mean2, sd)}));
     }
 
-    double eps = 0.5;
-    int runtimes = 10;
+    double eps = 1;
+    int runtimes = 20;
 
     ManageData randDistData;
 
@@ -38,7 +44,7 @@ int main (int, char**) {
         randDistData.insert(newRandData);
     }
 
-    randDistData.printSummary();
+    randDistData.printAll();
 
     randDistData.clear();
 
@@ -55,5 +61,5 @@ int main (int, char**) {
         randDistData.insert(newRandData);
     }
 
-    randDistData.printSummary();
+    randDistData.printAll();
 }
