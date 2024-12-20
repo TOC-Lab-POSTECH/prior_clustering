@@ -16,7 +16,7 @@ double TwoMeans::getCost() {
 TwoMeans::TwoMeans(vector<Point> points_, double epsilon_, string type_) :epsilon(epsilon_), points(points_){
     if(type_ == "raw"){ // algorithm for
         // Approximation parameters.
-        double alpha = epsilon; // epsilon / 64
+        double alpha = epsilon; // in paper, use alpha as epsilon / 64.
 
         // sampling size, superset size.
         int sampleSize = 10 / epsilon;
