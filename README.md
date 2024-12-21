@@ -1,5 +1,3 @@
-
-# Project_1: Clustering
 This repository contains two clustering algorithms - 2-approximation 2-center algorithm and (1+$\varepsilon$)-approximation 2-means clustering. Given the set of points, these algorithms return two _centers_ satisfying each objective function. We implement theses algorithms on C++.
 
 Note that we implemented these algorithms to use them in the experiments for the main research and development of our project.
