@@ -13,7 +13,7 @@ Note that CGAL has the dependency on the boost library since it uses the boost g
 The problem $k$-_Center_ is defined as follows: Given the set $S$ of points on the Euclidean space, find the $k$ balls $\mathcal B$ such that the union of the balls covers all points of $S$ while minimizing $\text{max}_{v\in S}d(v, B_v)$, where $B_v$ is the ball covering $v$ and $d(\cdot, \cdot)$ is the (Euclidean) distance function. In other words, we want to find the balls minimizing the maximum radii.
 __The 2-approximation 2-Center algorithm__ is an algorithm that provides a solution to the 2-Center problem with an approximation factor of 2, i.e., the algorithm guarantees that the objective value of its solution is at most twice the optimal value.
 Our implementation outputs the centers of the solution (i.e., the centers of the balls). It is a basic 2-approximation 2-Center algorithm based on a greedy technique. Specifically, the algorithm works as follows:
-1.  Pick an arbitrary point in SSS as the first center.
+1.  Pick an arbitrary point in $S$ as the first center.
 2.  Select the farthest point from the first center as the second center.
 
 ## 2-Means Approximation Algorithm
